@@ -8,6 +8,7 @@
 
 IMAGE=$([ "$1" == "alpine" ] && echo "golang:alpine" || echo "golang")
 SRCDIR=/go/src/github.com/subfuzion/envtpl
+LDFLAGS="-s -w"
 
-
-docker $DOCKER_OPTIONS run -t --rm -v "$PWD":$SRCDIR -e GOOS=${GOOS:-linux} -e GOARCH=${GOARCH:-amd64} -w $SRCDIR $IMAGE go build -v .
+docker pull $IMAGE
+docker $DOCKER_OPTIONS run -t --rm -v "$PWD":$SRCDIR -e GOOS=${GOOS:-linux} -e GOARCH=${GOARCH:-amd64} -w $SRCDIR $IMAGE go build -v -ldflags "$LDFLAGS" .
